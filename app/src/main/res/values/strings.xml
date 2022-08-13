@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">MarvelApp</string>
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="list_character_fragment_label">List Characters Fragment</string>
+    <string name="detail_character_fragment_label">Detail Character Fragment</string>
+    <string name="reload">Reload</string>
+    <string name="previous">Previous</string>
+
+    <string name="characters_list_fragment">¡Superheroes!</string>
+    <string name="error_list_characters">Something went wrong, try again</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+</resources>

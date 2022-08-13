@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.manuel1n1.apps.adapters.CharactersAdapter
@@ -47,7 +48,7 @@ class FirstFragment : Fragment(), CoroutineScope {
         initRecyclerView()
         launch {
             try {
-                val apiInterface = ApiService.create().getCharacters(ApiService.PUBLIC_KEY, ApiService.TIMESTAMP, ApiService.HASH, "name")
+                val apiInterface = ApiService.create().getNextCharacters(ApiService.PUBLIC_KEY, ApiService.TIMESTAMP, ApiService.HASH, "name")
                 onResult(apiInterface)
             } catch (ex: Exception) {
                 println(ex)
@@ -63,7 +64,7 @@ class FirstFragment : Fragment(), CoroutineScope {
             //findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
             launch {
                 try {
-                    val apiInterface = ApiService.create().getCharacters(ApiService.PUBLIC_KEY, ApiService.TIMESTAMP, ApiService.HASH, "name")
+                    val apiInterface = ApiService.create().getNextCharacters(ApiService.PUBLIC_KEY, ApiService.TIMESTAMP, ApiService.HASH, "name")
                     onResult(apiInterface)
                 } catch (ex: Exception) {
                     println(ex)
@@ -72,15 +73,27 @@ class FirstFragment : Fragment(), CoroutineScope {
         }
     }
 
-    private fun suscribeUI(adapter: CharactersAdapter, binding: CharacterItemBinding) {
+    /*private fun suscribeUI(adapter: CharactersAdapter, binding: CharacterItemBinding) {
 
-    }
+    }*/
 
     private fun initRecyclerView() {
         adapter = CharactersAdapter(charactersList)
         binding.characterListView.layoutManager = LinearLayoutManager(context)
         binding.characterListView.adapter = adapter
-
+        binding.nestedScrollView.setOnScrollChangeListener { v: NestedScrollView, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
+            if(scrollY == v.getChildAt(0).measuredHeight - v.measuredHeight) {
+                binding.progressBar.visibility = View.VISIBLE
+                launch {
+                    try {
+                        val apiInterface = ApiService.create().getNextCharacters(ApiService.PUBLIC_KEY, ApiService.TIMESTAMP, ApiService.HASH, charactersList.size, "name")
+                        onResult(apiInterface)
+                    } catch (ex: Exception) {
+                        println(ex)
+                    }
+                }
+            }
+        }
     }
 
     override fun onDestroyView() {

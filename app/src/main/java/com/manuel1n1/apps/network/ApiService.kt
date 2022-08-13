@@ -35,10 +35,19 @@ interface ApiService {
     }
 
     @GET("characters")
-    suspend fun getCharacters(
+    suspend fun getNextCharacters(
         @Query("apikey") apiKey:String,
         @Query("ts") ts:String,
         @Query("hash")hash:String,
+        @Query("orderBy")orderBy:String
+    ) : Response<CharacterDataWrapper>
+
+    @GET("characters")
+    suspend fun getNextCharacters(
+        @Query("apikey") apiKey:String,
+        @Query("ts") ts:String,
+        @Query("hash")hash:String,
+        @Query("offset")offset:Int,
         @Query("orderBy")orderBy:String
     ) : Response<CharacterDataWrapper>
 }

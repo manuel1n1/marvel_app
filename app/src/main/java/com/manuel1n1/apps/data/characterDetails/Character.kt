@@ -1,7 +1,10 @@
 package com.manuel1n1.apps.data.characterDetails
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 import java.util.*
 
+@Parcelize
 data class Character(
     val id:Int?,
     val name:String?,
@@ -14,7 +17,7 @@ data class Character(
     val stories: StoryList?,
     val events: EventList?,
     val series: SeriesList?
-) {
+) : Parcelable {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

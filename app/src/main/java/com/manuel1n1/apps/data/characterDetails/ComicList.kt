@@ -1,11 +1,26 @@
 package com.manuel1n1.apps.data.characterDetails
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class ComicList(
     val available :Int?,
     val returned:Int?,
     val collectionURI:String?,
     val items:Array<ComicSummary>?
-) {
+) : Parcelable {
+
+    fun getComicList():String {
+        var result:String = ""
+        if (items != null) {
+            for(item:ComicSummary in items) {
+                result += item.name + "\n"
+            }
+        }
+        return result
+    }
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

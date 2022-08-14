@@ -9,30 +9,18 @@ import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.manuel1n1.apps.adapters.CharactersAdapter
-import com.manuel1n1.apps.data.CharacterDataWrapper
-import com.manuel1n1.apps.data.characterDetails.Character
-import com.manuel1n1.apps.databinding.CharacterItemBinding
 import com.manuel1n1.apps.databinding.FragmentFirstBinding
-import com.manuel1n1.apps.network.ApiService
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
-import retrofit2.Response
-import java.lang.Exception
-import kotlin.coroutines.CoroutineContext
+import com.manuel1n1.apps.viewmodels.CharactersListViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class FirstFragment : Fragment(), CoroutineScope {
+@AndroidEntryPoint
+class FirstFragment : Fragment() {
 
+    private val viewModel: CharactersListViewModel by viewModels()
     private lateinit var adapter: CharactersAdapter
-    private val charactersList = mutableListOf<Character>()
-
-    private var job : Job = Job()
-    override val coroutineContext: CoroutineContext
-        get() = Dispatchers.Main + job
 
     private var _binding: FragmentFirstBinding? = null
 
@@ -45,15 +33,7 @@ class FirstFragment : Fragment(), CoroutineScope {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentFirstBinding.inflate(inflater, container, false)
-        initRecyclerView()
-        launch {
-            try {
-                val apiInterface = ApiService.create().getNextCharacters(ApiService.PUBLIC_KEY, ApiService.TIMESTAMP, ApiService.HASH, "name")
-                onResult(apiInterface)
-            } catch (ex: Exception) {
-                println(ex)
-            }
-        }
+        configView()
         return binding.root
     }
 
@@ -61,37 +41,23 @@ class FirstFragment : Fragment(), CoroutineScope {
         super.onViewCreated(view, savedInstanceState)
 
         binding.buttonReload.setOnClickListener {
-            //findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
-            launch {
-                try {
-                    val apiInterface = ApiService.create().getNextCharacters(ApiService.PUBLIC_KEY, ApiService.TIMESTAMP, ApiService.HASH, "name")
-                    onResult(apiInterface)
-                } catch (ex: Exception) {
-                    println(ex)
-                }
-            }
+            viewModel.getCharacters()
         }
     }
 
-    /*private fun suscribeUI(adapter: CharactersAdapter, binding: CharacterItemBinding) {
-
-    }*/
-
-    private fun initRecyclerView() {
-        adapter = CharactersAdapter(charactersList)
-        binding.characterListView.layoutManager = LinearLayoutManager(context)
-        binding.characterListView.adapter = adapter
-        binding.nestedScrollView.setOnScrollChangeListener { v: NestedScrollView, scrollX: Int, scrollY: Int, oldScrollX: Int, oldScrollY: Int ->
+    private fun configView() {
+        adapter = CharactersAdapter()
+        binding.characterRecyclerView.adapter = adapter
+        binding.characterRecyclerView.layoutManager = LinearLayoutManager(context)
+        viewModel.characterList.observe(viewLifecycleOwner) { characters ->
+            adapter.submitList(characters)
+        }
+        viewModel.loadingState.observe(viewLifecycleOwner) { state ->
+            binding.state = state
+        }
+        binding.nestedScrollView.setOnScrollChangeListener { v: NestedScrollView, _: Int, scrollY: Int, _: Int, _: Int ->
             if(scrollY == v.getChildAt(0).measuredHeight - v.measuredHeight) {
-                binding.progressBar.visibility = View.VISIBLE
-                launch {
-                    try {
-                        val apiInterface = ApiService.create().getNextCharacters(ApiService.PUBLIC_KEY, ApiService.TIMESTAMP, ApiService.HASH, charactersList.size, "name")
-                        onResult(apiInterface)
-                    } catch (ex: Exception) {
-                        println(ex)
-                    }
-                }
+                viewModel.getCharacters()
             }
         }
     }
@@ -99,17 +65,6 @@ class FirstFragment : Fragment(), CoroutineScope {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        job.cancel()
     }
 
-    private fun onResult(result: Response<CharacterDataWrapper>) {
-        println(result.body())
-        if(result.isSuccessful) {
-            val list: Array<Character> = result.body()?.data?.results ?: emptyArray()
-            charactersList.addAll(list)
-            adapter.notifyDataSetChanged()
-        } else {
-            //error
-        }
-    }
 }

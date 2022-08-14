@@ -18,11 +18,14 @@
     <fragment
         android:id="@+id/SecondFragment"
         android:name="com.manuel1n1.apps.fragmets.SecondFragment"
-        android:label="@string/hello_second_fragment"
+        android:label="@string/about_it_fragment"
         tools:layout="@layout/fragment_second">
 
         <action
             android:id="@+id/action_SecondFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />
+        <argument
+            android:name="characterItem"
+            app:argType="com.manuel1n1.apps.data.characterDetails.Character" />
     </fragment>
 </navigation>

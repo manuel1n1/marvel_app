@@ -10,11 +10,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.manuel1n1.apps.R
 import com.manuel1n1.apps.data.characterDetails.Character
 import com.manuel1n1.apps.databinding.CharacterItemBinding
+import com.manuel1n1.apps.fragmets.FirstFragmentDirections
+import com.manuel1n1.apps.fragmets.SecondFragmentDirections
 
-//class CharactersAdapter : ListAdapter<Character, RecyclerView.ViewHolder>(CharacterDiffCallback()) {
-class CharactersAdapter(private val characterList: List<Character>) : RecyclerView.Adapter<CharacterViewHolder>() {
+class CharactersAdapter : ListAdapter<Character, RecyclerView.ViewHolder>(CharacterDiffCallback()) {
+//class CharactersAdapter(private val characterList: List<Character>) : RecyclerView.Adapter<CharacterViewHolder>() {
 
-    /*override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return CharacterViewHolder(
             CharacterItemBinding.inflate(
                 LayoutInflater.from(parent.context),
@@ -27,9 +29,9 @@ class CharactersAdapter(private val characterList: List<Character>) : RecyclerVi
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val character = getItem(position)
         (holder as CharacterViewHolder).bind(character)
-    }*/
+    }
 
-    /*class CharacterViewHolder(
+    class CharacterViewHolder(
         private val binding: CharacterItemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         init {
@@ -44,7 +46,8 @@ class CharactersAdapter(private val characterList: List<Character>) : RecyclerVi
             character: Character,
             view : View
         ) {
-            view.findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+            val action = FirstFragmentDirections.actionFirstFragmentToSecondFragment(character)
+            view.findNavController().navigate(action)
         }
 
         fun bind(item:Character) {
@@ -53,30 +56,9 @@ class CharactersAdapter(private val characterList: List<Character>) : RecyclerVi
                 executePendingBindings()
             }
         }
-    }*/
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharacterViewHolder {
-        val layoutInflater = LayoutInflater.from(parent.context)
-        return CharacterViewHolder(layoutInflater.inflate(R.layout.character_item, parent, false))
-    }
-
-    override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) {
-        val item = characterList.get(position)
-        holder.bind(item)
-    }
-
-    override fun getItemCount(): Int = characterList.size
-}
-
-class CharacterViewHolder(view:View):RecyclerView.ViewHolder(view) {
-    private val binding = CharacterItemBinding.bind(view)
-    fun bind(item:Character) {
-        binding.apply {
-            character = item
-            println(item.thumbnail?.getUrlImage())
-            executePendingBindings()
-        }
     }
 }
+
 
 private class CharacterDiffCallback : DiffUtil.ItemCallback<Character>() {
 

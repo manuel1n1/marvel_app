@@ -9,5 +9,8 @@
 
     <string name="characters_list_fragment">¡Superheroes!</string>
     <string name="error_list_characters">Something went wrong, try again</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="loading">Getting superheroes</string>
+    <string name="about_it_fragment">About it</string>
+    <string name="comics">Comics</string>
+    <string name="series">Series</string>
 </resources>

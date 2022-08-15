@@ -22,7 +22,6 @@ class ComicsViewModel @Inject internal constructor(): ViewModel() {
 
     init {
         loadingState.postValue(LoadingStates.ERROR)
-        _comicList = MutableLiveData()
     }
 
     private fun updateWithResults(result: Response<ComicDataWrapper>) {
@@ -47,6 +46,10 @@ class ComicsViewModel @Inject internal constructor(): ViewModel() {
                 loadingState.postValue(LoadingStates.ERROR)
             }
         }
+    }
+
+    fun clear(){
+        _comicList.postValue(null)
     }
 
     private companion object {

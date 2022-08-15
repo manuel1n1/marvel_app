@@ -52,4 +52,9 @@ class ComicsFragment : Fragment() {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.clear()
+    }
+
 }

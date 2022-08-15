@@ -11,6 +11,13 @@ data class EventList(
     val items:Array<EventSummary>?,
 ) : Parcelable {
 
+    fun getEventsText():String {
+        return if(items != null && items.isNotEmpty())
+            "${items.size} items"
+        else
+            "N/A"
+    }
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

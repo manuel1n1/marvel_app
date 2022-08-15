@@ -7,9 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import com.manuel1n1.apps.adapters.CharactersAdapter
-import com.manuel1n1.apps.databinding.FragmentFirstBinding
+import com.manuel1n1.apps.databinding.FragmentCharacterListBinding
 import com.manuel1n1.apps.viewmodels.CharactersListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -17,12 +17,12 @@ import dagger.hilt.android.AndroidEntryPoint
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
 @AndroidEntryPoint
-class FirstFragment : Fragment() {
+class CharacterListFragment : Fragment() {
 
     private val viewModel: CharactersListViewModel by viewModels()
     private lateinit var adapter: CharactersAdapter
 
-    private var _binding: FragmentFirstBinding? = null
+    private var _binding: FragmentCharacterListBinding ? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -32,7 +32,7 @@ class FirstFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentFirstBinding.inflate(inflater, container, false)
+        _binding = FragmentCharacterListBinding.inflate(inflater, container, false)
         configView()
         return binding.root
     }
@@ -48,7 +48,7 @@ class FirstFragment : Fragment() {
     private fun configView() {
         adapter = CharactersAdapter()
         binding.characterRecyclerView.adapter = adapter
-        binding.characterRecyclerView.layoutManager = LinearLayoutManager(context)
+        binding.characterRecyclerView.layoutManager = GridLayoutManager(context,2)
         viewModel.characterList.observe(viewLifecycleOwner) { characters ->
             adapter.submitList(characters)
         }

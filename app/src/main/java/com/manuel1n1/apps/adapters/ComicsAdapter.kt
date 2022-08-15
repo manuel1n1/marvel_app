@@ -3,33 +3,49 @@ package com.manuel1n1.apps.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.findNavController
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.manuel1n1.apps.R
+import com.manuel1n1.apps.data.characterDetails.Character
 import com.manuel1n1.apps.data.characterDetails.ComicSummary
+import com.manuel1n1.apps.data.comicDetails.Comic
+import com.manuel1n1.apps.databinding.CharacterItemBinding
 import com.manuel1n1.apps.databinding.ComicItemBinding
+import com.manuel1n1.apps.fragmets.CharacterListFragmentDirections
 
-class ComicsAdapter(private val comicList: List<ComicSummary>) : RecyclerView.Adapter<ComicViewHolder>()  {
+class ComicsAdapter : ListAdapter<Comic, RecyclerView.ViewHolder>(ComicsDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ComicViewHolder {
-        val layoutInflater = LayoutInflater.from(parent.context)
-        return ComicViewHolder(layoutInflater.inflate(R.layout.comic_item, parent, false))
+        return ComicViewHolder(
+            ComicItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
-    override fun onBindViewHolder(holder: ComicViewHolder, position: Int) {
-        val item = comicList[position]
-        holder.bind(item)
+
+    class ComicViewHolder(
+        private val binding: ComicItemBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(item:Comic) {
+            binding.apply {
+                comic = item
+                executePendingBindings()
+            }
+        }
     }
 
-    override fun getItemCount(): Int = comicList.size
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        val item = getItem(position)
+        (holder as ComicViewHolder).bind(item)
+    }
 }
 
-class ComicViewHolder(view: View):RecyclerView.ViewHolder(view) {
-    private val binding = ComicItemBinding.bind(view)
+private class ComicsDiffCallback : DiffUtil.ItemCallback<Comic>() {
 
-    fun bind(item:ComicSummary) {
-        binding.apply {
-            comic = item
-            println(item.name)
-            executePendingBindings()
-        }
+    override fun areItemsTheSame(oldItem: Comic, newItem: Comic): Boolean {
+        return oldItem.id == newItem.id
+    }
+
+    override fun areContentsTheSame(oldItem: Comic, newItem: Comic): Boolean {
+        return oldItem == newItem
     }
 }

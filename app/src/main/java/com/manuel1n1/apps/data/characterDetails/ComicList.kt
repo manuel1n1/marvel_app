@@ -11,6 +11,13 @@ data class ComicList(
     val items:Array<ComicSummary>?
 ) : Parcelable {
 
+    fun getComicText():String {
+        return if(items != null && items.isNotEmpty())
+            "${items.size} items"
+        else
+            "N/A"
+    }
+
     fun getComicList():String {
         var result:String = ""
         if (items != null) {

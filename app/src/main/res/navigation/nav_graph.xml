@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/FirstFragment"
-        android:name="com.manuel1n1.apps.fragmets.FirstFragment"
+        android:name="com.manuel1n1.apps.fragmets.CharacterListFragment"
         android:label="@string/characters_list_fragment"
-        tools:layout="@layout/fragment_first">
+        tools:layout="@layout/fragment_character_list">
 
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
@@ -17,15 +17,25 @@
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
-        android:name="com.manuel1n1.apps.fragmets.SecondFragment"
+        android:name="com.manuel1n1.apps.fragmets.CharacterDetailsFragment"
         android:label="@string/about_it_fragment"
         tools:layout="@layout/fragment_second">
 
-        <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
         <argument
             android:name="characterItem"
             app:argType="com.manuel1n1.apps.data.characterDetails.Character" />
+        <action
+            android:id="@+id/action_SecondFragment_to_ComicsFragment"
+            app:destination="@id/ComicsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/ComicsFragment"
+        android:name="com.manuel1n1.apps.fragmets.ComicsFragment"
+        android:label="@string/comics">
+
+        <argument
+            android:name="idCharacter"
+            app:argType="integer" />
     </fragment>
 </navigation>

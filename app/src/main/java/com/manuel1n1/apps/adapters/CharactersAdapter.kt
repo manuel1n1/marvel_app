@@ -7,11 +7,9 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.manuel1n1.apps.R
 import com.manuel1n1.apps.data.characterDetails.Character
 import com.manuel1n1.apps.databinding.CharacterItemBinding
-import com.manuel1n1.apps.fragmets.FirstFragmentDirections
-import com.manuel1n1.apps.fragmets.SecondFragmentDirections
+import com.manuel1n1.apps.fragmets.CharacterListFragmentDirections
 
 class CharactersAdapter : ListAdapter<Character, RecyclerView.ViewHolder>(CharacterDiffCallback()) {
 //class CharactersAdapter(private val characterList: List<Character>) : RecyclerView.Adapter<CharacterViewHolder>() {
@@ -46,7 +44,7 @@ class CharactersAdapter : ListAdapter<Character, RecyclerView.ViewHolder>(Charac
             character: Character,
             view : View
         ) {
-            val action = FirstFragmentDirections.actionFirstFragmentToSecondFragment(character)
+            val action = CharacterListFragmentDirections.actionFirstFragmentToSecondFragment(character)
             view.findNavController().navigate(action)
         }
 

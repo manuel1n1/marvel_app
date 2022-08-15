@@ -2,10 +2,12 @@ package com.manuel1n1.apps.network
 
 import com.manuel1n1.apps.BuildConfig
 import com.manuel1n1.apps.data.CharacterDataWrapper
+import com.manuel1n1.apps.data.ComicDataWrapper
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 import java.math.BigInteger
 import java.security.MessageDigest
@@ -50,4 +52,12 @@ interface ApiService {
         @Query("offset")offset:Int,
         @Query("orderBy")orderBy:String
     ) : Response<CharacterDataWrapper>
+
+    @GET("characters/{idCharacter}/comics")
+    suspend fun getComicsFromCharacter(
+        @Path("idCharacter") idCharacter:Int,
+        @Query("apikey") apiKey:String,
+        @Query("ts") ts:String,
+        @Query("hash")hash:String
+    ) : Response<ComicDataWrapper>
 }

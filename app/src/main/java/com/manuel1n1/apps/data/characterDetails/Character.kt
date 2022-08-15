@@ -18,6 +18,14 @@ data class Character(
     val events: EventList?,
     val series: SeriesList?
 ) : Parcelable {
+
+    fun getDescriptionText():String {
+        return if(description != null && description.isNotEmpty())
+            description
+        else
+            "N/A"
+    }
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

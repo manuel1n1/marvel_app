@@ -10,26 +10,23 @@
         <variable
             name="character"
             type="com.manuel1n1.apps.data.characterDetails.Character"/>
-        <variable
-            name="hasResult"
-            type="Boolean"/>
     </data>
 
     <ScrollView
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@android:color/darker_gray">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_margin="8dp"
-            android:gravity="center"
-            tools:context=".fragmets.SecondFragment">
+            tools:context=".fragmets.CharacterDetailsFragment">
 
             <ImageView
                 android:id="@+id/character_image"
-                android:layout_width="300dp"
+                android:layout_width="match_parent"
                 android:layout_height="300dp"
                 android:scaleType="fitCenter"
                 app:imageFromUrl="@{character.thumbnail.urlImage}"
@@ -42,14 +39,15 @@
                 android:text="@{character.name}"
                 android:textSize="36sp"
                 android:layout_margin="8dp"
+                style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
                 tools:text="Iron Man" />
 
             <TextView
                 android:id="@+id/txtDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{character.description}"
-                android:textSize="24sp"
+                android:text="@{character.getDescriptionText}"
+                android:textSize="18sp"
                 android:layout_margin="8dp"
                 android:textAlignment="viewStart"
                 tools:text="Lorem ipsum dolor sit amet,
@@ -58,65 +56,117 @@
             ut labore et dolore magna aliqua." />
 
             <LinearLayout
+                android:id="@+id/comic_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_margin="8dp"
-                android:gravity="center">
+                android:orientation="horizontal"
+                android:layout_margin="8dp">
 
                 <TextView
-                    android:layout_width="match_parent"
+                    style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/comics"
-                    android:textAlignment="center"
-                    android:textSize="30sp"
+                    android:textAlignment="viewStart"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
                     tools:text="Comics" />
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{character.comics.comicList}"
-                    android:textAlignment="center"
-                    android:textSize="18sp" />
+                    android:text="@{character.comics.getComicText}"
+                    android:textAlignment="viewStart"
+                    android:textSize="24sp"
+                    tools:text="Comics" />
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/comicsRecyclerView"
-                    android:layout_width="match_parent"
+                <ImageView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:spanCount="2" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/series"
-                    android:textAlignment="center"
-                    android:textSize="30sp"
-                    tools:text="Series" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@{character.series.getSeriesList}"
-                    android:textAlignment="center"
-                    android:textSize="18sp" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/seriesRecyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:spanCount="2"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="parent" />
+                    android:layout_gravity="center"
+                    android:background="@drawable/ic_baseline_keyboard_arrow_right_24"
+                    tools:srcCompat="@drawable/ic_baseline_keyboard_arrow_right_24" />
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/button_second"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/previous" />
+                android:orientation="horizontal"
+                android:layout_margin="8dp">
+
+                <TextView
+                    style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/series"
+                    android:textAlignment="viewStart"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    tools:text="Series" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{character.series.getSeriesText}"
+                    android:textAlignment="viewStart"
+                    android:textSize="24sp"
+                    tools:text="Series" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="8dp">
+
+                <TextView
+                    style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/stories"
+                    android:textAlignment="viewStart"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    tools:text="Stories" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{character.stories.getStoriesText}"
+                    android:textAlignment="viewStart"
+                    android:textSize="24sp"
+                    tools:text="Series" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="8dp">
+
+                <TextView
+                    style="@style/TextAppearance.AppCompat.Widget.ActionMode.Subtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/events"
+                    android:textAlignment="viewStart"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    tools:text="Events" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{character.events.getEventsText}"
+                    android:textAlignment="viewStart"
+                    android:textSize="24sp"
+                    tools:text="Events" />
+
+            </LinearLayout>
+
         </LinearLayout>
 
 

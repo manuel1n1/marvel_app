@@ -11,6 +11,13 @@ data class SeriesList(
     val items:Array<SeriesSummary>?,
 ) : Parcelable {
 
+    fun getSeriesText():String {
+        return if(items != null && items.isNotEmpty())
+            "${items.size} items"
+        else
+            "N/A"
+    }
+
     fun getSeriesList():String {
         var result: String = ""
         if (items != null) {

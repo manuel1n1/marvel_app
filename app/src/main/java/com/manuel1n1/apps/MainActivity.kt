@@ -12,6 +12,7 @@ import android.view.MenuItem
 import com.manuel1n1.apps.data.CharacterDataWrapper
 import com.manuel1n1.apps.databinding.ActivityMainBinding
 import com.manuel1n1.apps.network.ApiService
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -20,6 +21,7 @@ import retrofit2.Response
 import java.lang.Exception
 import kotlin.coroutines.CoroutineContext
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration

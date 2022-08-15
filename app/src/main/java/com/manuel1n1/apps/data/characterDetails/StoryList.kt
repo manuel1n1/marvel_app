@@ -1,11 +1,23 @@
 package com.manuel1n1.apps.data.characterDetails
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class StoryList(
     val available:Int?,
     val returned:Int?,
     val collectionURI:String?,
-    val items:Array<StorySummary>,
-) {
+    val items:Array<StorySummary>?,
+) : Parcelable {
+
+    fun getStoriesText():String {
+        return if(items != null && items.isNotEmpty())
+            "${items.size} items"
+        else
+            "N/A"
+    }
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

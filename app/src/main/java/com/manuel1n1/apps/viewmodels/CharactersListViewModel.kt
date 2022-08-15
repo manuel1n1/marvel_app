@@ -43,14 +43,13 @@ class CharactersListViewModel @Inject internal constructor() : ViewModel() {
         if(result.isSuccessful) {
             val list: Array<Character> = result.body()?.data?.results ?: emptyArray()
             if(_characterList.value != null) {
-                _characterList.postValue(list.toList())
+                val newList = _characterList.value!!.toMutableList()
+                newList.addAll(list)
+                _characterList.postValue(newList)
             }
             else
                 _characterList.postValue(list.toMutableList())
             addToCount(list.size)
-        } else {
-            //error
-            //_characterList.postValue(_characterList.value?.toMutableList() ?: emptyList<Character>().toMutableList())
         }
     }
 
@@ -60,6 +59,7 @@ class CharactersListViewModel @Inject internal constructor() : ViewModel() {
                 val apiResult = apiService.getNextCharacters(ApiService.PUBLIC_KEY, ApiService.TIMESTAMP, ApiService.HASH, countList, "name")
                 updateWithResults(apiResult)
             } catch (ex: Exception) {
+                println(ex)
                 loadingState.postValue(LoadingStates.ERROR)
             }
         }
